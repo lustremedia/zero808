@@ -2,12 +2,20 @@ class ZeroEightOhEight
 	def input
 		puts 'How bright a time? (Format: 23:59 or 2359)'
 		@t = gets.chomp.tr(':','')
-		if @t =~ /([01]\d|2[0-3])[0-5]\d/ && @t.length == 4
+		calc_brightness(@t)
+	end
+
+	def autofind
+		24.times { |h| 60.times { |m| calc_brightness("#{"%02d" % h}#{"%02d" % m}") }	}
+	end
+
+	def calc_brightness(time)
+		if time =~ /([01]\d|2[0-3])[0-5]\d/ && time.length == 4
 			b = 0
-			@t.each_char { |c| b += lookup(c.to_i) }
-			puts "Brightest, You are on TIME!" if b == 26
-			puts "You time guessing DIMWIT! #{b}" unless b == 26 || b == 8
-			puts "Thou lovest DARKNESS!"	if b == 8
+			time.each_char { |c| b += lookup(c.to_i) }
+			puts "#{time}: Brightest, You are on TIME! #{b}" if b == 26
+			puts "#{time}: You time guessing DIMWIT! #{b}" unless b == 26 || b == 8
+			puts "#{time}: Thou lovest DARKNESS! #{b}"	if b == 8
 		else
 		  puts "Sorry wrong timezone ... DIMWIT!" 
 		end		
